@@ -1,0 +1,22 @@
+{
+  "assets": {
+    "fflate": {
+      "path": "../../shared/vendor/fflate.umd.js",
+      "version": "0.8.3",
+      "license": "MIT",
+      "escape_mode": "raw_js"
+    },
+    "cantoo-pdf-lib": {
+      "path": "../../shared/vendor/cantoo-pdf-lib.min.js",
+      "version": "2.9.1",
+      "license": "MIT",
+      "escape_mode": "raw_js"
+    },
+    "all-in-one-meta": {
+      "path": "all-in-one-meta.js",
+      "version": "internal",
+      "license": "project-internal",
+      "escape_mode": "raw_js"
+    }
+  }
+}

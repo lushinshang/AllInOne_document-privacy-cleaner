@@ -1,0 +1,23 @@
+{
+  "name": "all-in-one-document-privacy-cleaner-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portable QA harness for the standalone document privacy cleaner",
+  "scripts": {
+    "fixtures": "node tests/fixtures/generate-fixtures.cjs",
+    "test": "node test_cleaner.cjs",
+    "test:capacity": "node tests/capacity-test.cjs",
+    "test:clean-download": "node tests/clean-download-test.cjs",
+    "test:functional": "node tests/functional-test.cjs",
+    "test:performance": "node tests/performance-test.cjs",
+    "test:security": "node tests/security-test.cjs",
+    "test:matrix": "node qa/run-matrix.cjs",
+    "test:setup": "playwright install chromium"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

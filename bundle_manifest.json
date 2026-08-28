@@ -1,0 +1,86 @@
+{
+  "fflate": {
+    "source": "../../shared/vendor/fflate.umd.js",
+    "version": "0.8.3",
+    "license": "MIT",
+    "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+  },
+  "cantoo-pdf-lib": {
+    "source": "../../shared/vendor/cantoo-pdf-lib.min.js",
+    "version": "2.9.1",
+    "license": "MIT",
+    "sha256": "5458a18eb5adfc387b2f005f7c7d56d3f379ae7d1a4b98ca37329cdb942930f3"
+  },
+  "util-escape": {
+    "source": "shared/util-escape.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "75d81be0a09695ceb071f7c338ae6b2b8e23fc660f2dffa2bf209cc8a480c231"
+  },
+  "ui-toast": {
+    "source": "shared/ui-toast.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "ae3a7ec34ac21b9d78809bc91300ec372d0443f4f668b5d9543c5c931f4bb9a4"
+  },
+  "io-download": {
+    "source": "shared/io-download.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "3da6c61784b1dd4b9b096cfa5e676b55efe56af706729865c0dd33aaa4a50ae1"
+  },
+  "io-clipboard": {
+    "source": "shared/io-clipboard.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "afa2866517ff6f41c92e5b7d9b1bd7b5a4b07c389d766ef5980711ff5841465a"
+  },
+  "io-zip": {
+    "source": "shared/io-zip.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "ba94e839811624f45f72d4417d79df1acc9343e0ee32360afdeb9bc27450bd34"
+  },
+  "img-exif": {
+    "source": "shared/img-exif.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "4dcee95ade7378edc3233923116d5ab7a24147649c488f1cc4bbac0a071330c9"
+  },
+  "pdf-decode": {
+    "source": "shared/pdf-decode.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "3ac973839548de5507fd3fbbbe42ca7db5278c2b1fe90a0590aea728dcf502ad"
+  },
+  "pdf-build": {
+    "source": "shared/pdf-build.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "166937c21e377563898421973d3a91472aa1934da4a930efb2e7a5343fa61488"
+  },
+  "docx-meta": {
+    "source": "shared/docx-meta.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "264d1dfaae5acb3fb3fa94736f4cd8399ce2c58b1af6a6499d3a353ef88b9b0c"
+  },
+  "xlsx-meta": {
+    "source": "shared/xlsx-meta.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "ba1818d684f95a8c1cd72009c5f9394a5277adcad920b1f0df83f626bb06aecf"
+  },
+  "pptx-meta": {
+    "source": "shared/pptx-meta.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "0c301aed40ec1a0ee6d64303c6993a2021bff349810ce258800896fc805d5676"
+  },
+  "all-in-one-meta": {
+    "source": "all-in-one-meta.js",
+    "version": "internal",
+    "license": "project-internal",
+    "sha256": "a7fafe274acef28ee89131de071337a6f7bc5a6eda1fa426a5427ccfccd3a0a0"
+  }
+}

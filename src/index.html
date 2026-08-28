@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One 文件隱私 Metadata 清理器</title>
+  <style>
+/* shared/base.css — 共用樣式基底 */
+:root {
+  --color-bg: #f7f7f8;
+  --color-surface: #ffffff;
+  --color-border: #d9d9de;
+  --color-text: #1f2328;
+  --color-text-muted: #6b7280;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-danger: #dc2626;
+  --color-toast-bg: #1f2328;
+  --color-toast-text: #ffffff;
+  --radius: 8px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+h1, h2, h3 { line-height: 1.3; }
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 1rem;
+}
+
+button, .btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+button:hover, .btn:hover { background: var(--color-bg); }
+
+button.primary, .btn.primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+button.primary:hover, .btn.primary:hover { background: var(--color-primary-hover); }
+
+button:disabled, .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.dropzone.dragover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: #eff6ff;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  background: var(--color-toast-bg);
+  color: var(--color-toast-text);
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.toast.show { opacity: 1; }
+
+.risk-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.risk-high { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.risk-med { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+.risk-low { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.risk-none { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.2rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+.doc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.doc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: #eff6ff;
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.doc-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  background: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+.warn-box {
+  font-size: 0.85rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+}
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+.diff-table th, .diff-table td {
+  padding: 0.6rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+.diff-table th { background: #f1f5f9; }
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.btn-sm {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+}
+.thumb-preview {
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header style="margin-bottom: 1.5rem;">
+      <h1>All-in-One 文件隱私 Metadata 清理器</h1>
+      <p class="subtitle" style="color: var(--color-text-muted);">
+        在單一介面內同時支援<strong>圖片（JPG/PNG/WebP）、PDF 文件與 Office 文件（Word/Excel/PowerPoint）</strong>的隱私 Metadata 檢測與清除。
+        全程在瀏覽器本機端執行，不需上傳至任何伺服器，安全零洩漏。
+      </p>
+    </header>
+
+    <div class="dropzone" id="drop-zone">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>
+      <div style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.25rem;">拖放多個檔案至此，或點擊選取檔案</div>
+      <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 1rem;">
+        支援格式：.jpg, .jpeg, .png, .webp, .pdf, .docx, .xlsx, .pptx
+      </div>
+      <input type="file" id="file-input" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.docx,.xlsx,.pptx" style="display: none;">
+      <button type="button" class="btn secondary" id="btn-select-files">選取檔案</button>
+    </div>
+
+    <div class="card" id="clean-options-card" style="display: none; margin-top: 1.5rem;">
+      <h3 style="margin-top: 0; font-size: 1.1rem;">清理範圍說明</h3>
+      <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+        點擊開始清除後，將對選取的檔案自動套用各格式專屬的隱私清除標準：
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; font-size: 0.85rem;">
+        <div style="background: #f8fafc; padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid var(--color-border);">
+          <strong>🖼️ 圖片：</strong> 移除 EXIF、GPS 座標、相機型號與 XMP 標籤。
+        </div>
+        <div style="background: #f8fafc; padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid var(--color-border);">
+          <strong>📄 PDF：</strong> 移除作者、軟體屬性、超連結、審閱註解、表單與內嵌附件。
+        </div>
+        <div style="background: #f8fafc; padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid var(--color-border);">
+          <strong>📊 Office：</strong> 移除作者、公司、縮圖、註解、樞紐快取與講者備忘稿。
+        </div>
+      </div>
+      
+      <div style="margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+        <span id="plan-stats-text" style="font-size: 0.95rem; font-weight: 600;">即將清除：0 份，保留原樣：0 份</span>
+        <div class="btn-group" style="margin: 0;">
+          <button type="button" class="btn primary" id="btn-start-clean">開始清除 Metadata</button>
+          <button type="button" class="btn secondary" id="btn-clear">清空佇列</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="results-section" style="display: none; margin-top: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+        <h3 style="margin: 0;">文件清單與風險檢視 (<span id="doc-count">0</span>)</h3>
+        <div class="btn-group" id="download-actions" style="display: none; margin: 0;">
+          <button type="button" class="btn primary btn-sm" id="btn-download-zip">📦 打包下載已清除 ZIP</button>
+          <button type="button" class="btn secondary btn-sm" id="btn-copy-summary">📋 複製風險摘要</button>
+        </div>
+      </div>
+      <div id="docs-container"></div>
+    </div>
+
+    <div class="btn-group" style="margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
+      <button type="button" class="btn secondary" id="btn-download-offline">💾 下載本工具離線版</button>
+    </div>
+
+    <!--{{LICENSES}}-->
+  </div>
+
+  <!--{{ASSET:fflate}}-->
+  <!--{{ASSET:cantoo-pdf-lib}}-->
+  <!--{{SHARED:util-escape}}-->
+  <!--{{SHARED:ui-toast}}-->
+  <!--{{SHARED:io-download}}-->
+  <!--{{SHARED:io-clipboard}}-->
+  <!--{{SHARED:io-zip}}-->
+  <!--{{SHARED:img-exif}}-->
+  <!--{{SHARED:pdf-decode}}-->
+  <!--{{SHARED:pdf-build}}-->
+  <!--{{SHARED:docx-meta}}-->
+  <!--{{SHARED:xlsx-meta}}-->
+  <!--{{SHARED:pptx-meta}}-->
+  <!--{{ASSET:all-in-one-meta}}-->
+</body>
+</html>
